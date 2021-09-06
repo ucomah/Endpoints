@@ -25,6 +25,34 @@ public extension AnyHTTPEndpoint {
     var parameters: [String: Any]? { nil }
 }
 
+// MARK: -
+
+public protocol Endpoint: AnyHTTPEndpoint {
+    
+    typealias HTTPParameter = HTTP.Parameter
+    
+    associatedtype Body: HTTPPayload
+    
+    var body: Body? { get }
+}
+
+public extension Endpoint {
+    
+    var body: Body? { nil }
+
+    var parameters: [String: Any]? {
+        let buf = Mirror(reflecting: self).children.compactMap {
+            $0.value as? AnyParameterValue
+        }.filter {
+            $0.kind == .query
+        }.map {
+            ($0.name, $0.anyValue)
+        }
+        return Dictionary(uniqueKeysWithValues: buf)
+    }
+}
+
+
 // MARK: - Extensions
 
 public extension AnyHTTPEndpoint {
