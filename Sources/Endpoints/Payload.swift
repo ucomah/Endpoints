@@ -1,4 +1,3 @@
-// TODO: Add support for `Codable`
 public protocol HTTPPayload: CustomStringConvertible {
     init()
 }
@@ -11,7 +10,8 @@ extension HTTPPayload {
     }
     
     public var description: String {
-        // FIXME: Complete this
-        ""
+        Mirror(reflecting: self).children.compactMap {
+            "\(unwrap($0.label)) = \(unwrap($0.value))"
+        }.joined(separator: "\n")
     }
 }
