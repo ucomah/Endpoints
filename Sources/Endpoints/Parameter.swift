@@ -55,6 +55,53 @@ where T: ExpressibleByStringLiteral {
     }
 }
 
+extension HTTP.Parameter: ExpressibleByIntegerLiteral where T: ExpressibleByIntegerLiteral {
+    
+    public init(integerLiteral value: T.IntegerLiteralType) {
+        self.init(value: T(integerLiteral: value))
+    }
+}
+
+extension HTTP.Parameter: ExpressibleByFloatLiteral where T: ExpressibleByFloatLiteral {
+    
+    public init(floatLiteral value: T.FloatLiteralType) {
+        self.init(value: T(floatLiteral: value))
+    }
+}
+
+extension HTTP.Parameter: ExpressibleByBooleanLiteral where T: ExpressibleByBooleanLiteral {
+    
+    public init(booleanLiteral value: T.BooleanLiteralType) {
+        self.init(value: T(booleanLiteral: value))
+    }
+}
+
+extension HTTP.Parameter: ExpressibleByNilLiteral where T: ExpressibleByNilLiteral {
+    
+    public init(nilLiteral: ()) {
+        self.init(value: T(nilLiteral: nilLiteral))
+    }
+}
+
+extension HTTP.Parameter: ExpressibleByArrayLiteral where T: ExpressibleByArrayLiteral {
+    
+    public typealias ArrayLiteralElement = T.ArrayLiteralElement
+    
+    public init(arrayLiteral elements: T.ArrayLiteralElement...) {
+        self.init(value: elements as! T) // swiftlint:disable:this force_cast
+    }
+}
+
+extension HTTP.Parameter: ExpressibleByDictionaryLiteral where T: ExpressibleByDictionaryLiteral {
+    
+    public typealias Key = T.Key
+    public typealias Value = T.Value
+    
+    public init(dictionaryLiteral elements: (T.Key, T.Value)...) {
+        self.init(value: elements as! T) // swiftlint:disable:this force_cast
+    }
+}
+
 
 internal protocol AnyParameterValue {
     var name: String { get }
