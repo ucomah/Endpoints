@@ -15,14 +15,17 @@ public extension Endpoint {
     var body: Body? { nil }
 
     var parameters: [String: Any]? {
-        let buf = Mirror(reflecting: self).children.compactMap {
-            $0.value as? AnyParameterValue
-        }.filter {
-            $0.kind == .query
+        let mirror = Mirror(reflecting: self).children
+        let titles = mirror.map {
+            $0.label ?? ""
         }.map {
-            ($0.name, $0.anyValue)
+            $0.trimmingCharacters(in: .init(charactersIn: "_"))
         }
-        return Dictionary(uniqueKeysWithValues: buf)
+        let values = mirror.map { $0.value as? AnyParameterValue }
+        let buf = zip(titles, values).map {
+            (max($0.0, $0.1?.name ?? ""), $0.1?.anyValue)
+        }
+        return Dictionary(uniqueKeysWithValues: buf).compactMapValues { $0 }
     }
 }
 

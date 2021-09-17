@@ -9,8 +9,6 @@ struct GetAPI: Endpoint {
     
     var path: String { "/fantastic-path/\(self.pathPart)" }
     
-    
-    @HTTP.Parameter(name: "path-part", kind: .path)
     var pathPart: String
     
     @HTTP.Parameter(name: "item-id", help: "item id")
@@ -28,8 +26,6 @@ struct PostAPI: Endpoint {
     
     var path: String { "/fantastic-path/\(self.pathPart)" }
     
-    
-    @HTTP.Parameter(name: "path-part", kind: .path)
     var pathPart: String
     
     struct Body: HTTPPayload {

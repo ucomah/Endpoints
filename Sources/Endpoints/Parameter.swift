@@ -12,8 +12,6 @@ extension HTTP {
         
         private var _value: InputValue<T>
         
-        public let kind: ParameterKind
-        
         public var wrappedValue: T {
             get {
                 _value.get(errorMessage: "Parameter {\(self.name)} was not initialized")
@@ -27,10 +25,9 @@ extension HTTP {
         
         var anyValue: Any { wrappedValue }
         
-        public init(name: String, kind: ParameterKind = .query, help: String? = nil) {
+        public init(name: String, help: String? = nil) {
             self.name = name
             self.help = help
-            self.kind = kind
             self._value = .uninitialized
         }
         
@@ -42,12 +39,6 @@ extension HTTP {
     }
 }
 
-extension HTTP {
-    public enum ParameterKind: Int {
-        /// Represents a part of URL path
-        case path
-        /// URL query parameter
-        case query
 extension HTTP.Parameter: ExpressibleByStringLiteral, ExpressibleByUnicodeScalarLiteral, ExpressibleByExtendedGraphemeClusterLiteral
 where T: ExpressibleByStringLiteral {
     
@@ -68,7 +59,6 @@ where T: ExpressibleByStringLiteral {
 internal protocol AnyParameterValue {
     var name: String { get }
     var help: String? { get }
-    var kind: HTTP.ParameterKind { get }
     var isInitialized: Bool { get }
     var anyValue: Any { get  }
 }
