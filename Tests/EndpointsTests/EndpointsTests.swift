@@ -44,15 +44,12 @@ struct PostAPI: Endpoint {
 final class EndpointsTest: XCTestCase {
     
     func testGET() {
-        var get = GetAPI()
-        get.pathPart = "fasciating-path"
-        get.itemId = "2345trgf"
+        let get = GetAPI(pathPart: "fasciating-path", itemId: "2345trgf")
         print(get)
     }
     
     func testPOST() {
-        var api = PostAPI()
-        api.pathPart = "some-kind-of-path"
+        var api = PostAPI(pathPart: "some-kind-of-path")
         let body =  PostAPI.Body(item1: "test", item2: nil)
         api.body = body
         print(api)

@@ -33,6 +33,12 @@ extension HTTP {
             self.kind = kind
             self._value = .uninitialized
         }
+        
+        public init(value: T, name: String = "", help: String? = nil) {
+            self.name = name
+            self.help = help
+            self._value = .initialized(value)
+        }
     }
 }
 
@@ -42,8 +48,22 @@ extension HTTP {
         case path
         /// URL query parameter
         case query
+extension HTTP.Parameter: ExpressibleByStringLiteral, ExpressibleByUnicodeScalarLiteral, ExpressibleByExtendedGraphemeClusterLiteral
+where T: ExpressibleByStringLiteral {
+    
+    public init(stringLiteral value: T.StringLiteralType) {
+        self.init(value: T(stringLiteral: value))
+    }
+
+    public init(unicodeScalarLiteral value: T.UnicodeScalarLiteralType) {
+        self.init(value: T(unicodeScalarLiteral: value))
+    }
+    
+    public init(extendedGraphemeClusterLiteral value: T.ExtendedGraphemeClusterLiteralType) {
+        self.init(value: T(extendedGraphemeClusterLiteral: value))
     }
 }
+
 
 internal protocol AnyParameterValue {
     var name: String { get }
