@@ -15,4 +15,10 @@ public final class HTTP {
     }
 
     public typealias Headers = [String: String]
+    
+    public enum ContentType: String {
+        case json
+        case formData
+        case plainText
+    }
 }

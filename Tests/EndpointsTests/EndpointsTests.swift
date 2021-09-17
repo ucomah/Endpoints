@@ -32,7 +32,7 @@ struct PostAPI: Endpoint {
     @HTTP.Parameter(name: "path-part", kind: .path)
     var pathPart: String
     
-    struct Body: CodableBody {
+    struct Body: HTTPPayload {
         var item1: String?
         var item2: String?
     }
@@ -53,7 +53,10 @@ final class EndpointsTest: XCTestCase {
     func testPOST() {
         var api = PostAPI()
         api.pathPart = "some-kind-of-path"
-        api.body = .init(item1: "test", item2: nil)
+        let body =  PostAPI.Body(item1: "test", item2: nil)
+        api.body = body
         print(api)
+        let data = try! JSONEncoder().encode(body) // swiftlint:disable:this force_cast
+        print(String(data: data, encoding: .utf8) ?? "n/a")
     }
 }

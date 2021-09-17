@@ -43,9 +43,9 @@ extension Endpoint {
 // MARK: - Body variations
 
 public struct EmptyBody: HTTPPayload {
-    public init() {}
+    public var kind: HTTP.ContentType { .plainText }
 }
 
-public protocol CodableBody: HTTPPayload, Codable {}
-
-extension String: HTTPPayload {}
+extension String: HTTPPayload {
+    public var kind: HTTP.ContentType { .plainText }
+}
