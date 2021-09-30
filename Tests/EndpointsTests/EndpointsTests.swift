@@ -1,7 +1,7 @@
 import XCTest
 @testable import Endpoints
 
-struct GetAPI: Endpoint {
+struct GetAPI: AnyEndpoint {
     
     var method: HTTP.Method { .get }
     
@@ -13,8 +13,6 @@ struct GetAPI: Endpoint {
     
     @HTTP.Parameter(name: "item-id", help: "item id")
     var itemId: String
-
-    var body: EmptyBody?
 }
 
 

@@ -52,3 +52,13 @@ public struct EmptyBody: HTTPPayload {
 extension String: HTTPPayload {
     public var kind: HTTP.ContentType { .plainText }
 }
+
+// MARK: - AnyEndpoint
+
+/// Type-erased Endpoint.
+protocol AnyEndpoint: Endpoint { }
+
+extension AnyEndpoint {
+    
+    var body: EmptyBody? { nil }
+}
