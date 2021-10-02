@@ -4,7 +4,7 @@ public protocol HTTPPayload: CustomStringConvertible, Encodable {
 
 extension HTTPPayload {
     
-    var kind: HTTP.ContentType { .json }
+    public var kind: HTTP.ContentType { .json }
     
     public var description: String {
         switch kind {
