@@ -56,9 +56,8 @@ extension String: HTTPPayload {
 // MARK: - AnyEndpoint
 
 /// Type-erased Endpoint.
-protocol AnyEndpoint: Endpoint { }
+public protocol AnyEndpoint: Endpoint { }
 
 extension AnyEndpoint {
-    
-    var body: EmptyBody? { nil }
+    public var body: EmptyBody? { nil }
 }
