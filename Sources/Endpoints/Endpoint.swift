@@ -13,6 +13,9 @@ public protocol Endpoint: AnyHTTPEndpoint {
 public extension Endpoint {
     
     var body: Body? { nil }
+}
+
+public extension AnyHTTPEndpoint {
 
     var parameters: [String: Any]? {
         let mirror = Mirror(reflecting: self).children

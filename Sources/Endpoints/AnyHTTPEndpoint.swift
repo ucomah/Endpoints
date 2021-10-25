@@ -22,7 +22,6 @@ public protocol AnyHTTPEndpoint: LosslessStringConvertible {
 
 public extension AnyHTTPEndpoint {
     var headers: HTTP.Headers? { nil }
-    var parameters: [String: Any]? { nil }
 }
 
 // MARK: - Extensions
