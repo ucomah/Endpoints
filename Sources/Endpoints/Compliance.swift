@@ -5,29 +5,29 @@ public protocol AnyRawRepresentable {
     var boolRawValue: Bool? { get }
 }
 
-extension AnyRawRepresentable {
+public extension AnyRawRepresentable {
     var stringRawValue: String? { nil }
     var intRawValue: Int? { nil }
     var floatRawValue: Float? { nil }
     var boolRawValue: Bool? { nil }
 }
 
-extension AnyRawRepresentable
+public extension AnyRawRepresentable
 where Self: RawRepresentable, Self.RawValue == String {
     var stringRawValue: String? { rawValue }
 }
 
-extension AnyRawRepresentable
+public extension AnyRawRepresentable
 where Self: RawRepresentable, Self.RawValue == Int {
     var intRawValue: Int? { rawValue }
 }
 
-extension AnyRawRepresentable
+public extension AnyRawRepresentable
 where Self: RawRepresentable, Self.RawValue == Float {
     var floatRawValue: Float? { rawValue }
 }
 
-extension AnyRawRepresentable
+public extension AnyRawRepresentable
 where Self: RawRepresentable, Self.RawValue == Bool {
     var boolRawValue: Bool? { rawValue }
 }
