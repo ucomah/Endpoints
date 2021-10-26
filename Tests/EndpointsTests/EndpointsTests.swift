@@ -34,6 +34,24 @@ struct PostAPI: Endpoint {
     var body: Body?
 }
 
+public struct ResendKey: AnyEndpoint {
+    public var baseURL: String { "https://dev.myserver.com/v2" }
+    
+    public enum SendCodeType: String, AnyRawRepresentable {
+        case activation = "1", reset = "2", back = ""
+    }
+    public var method: HTTP.Method { .post }
+    public var path: String { "/resend-key" }
+    @HTTP.Parameter(name: "email")
+    public var email: String
+    @HTTP.Parameter(name: "type")
+    public var kind: SendCodeType
+    public init(email: String, kind: SendCodeType) {
+        self.email = email
+        self.kind = kind
+    }
+}
+
 
 final class EndpointsTest: XCTestCase {
     
@@ -49,5 +67,10 @@ final class EndpointsTest: XCTestCase {
         print(api)
         let data = try! JSONEncoder().encode(body) // swiftlint:disable:this force_cast
         print(String(data: data, encoding: .utf8) ?? "n/a")
+    }
+    
+    func testResend() {
+        let api = ResendKey(email: "some@mail.com", kind: .activation)
+        print(api)
     }
 }

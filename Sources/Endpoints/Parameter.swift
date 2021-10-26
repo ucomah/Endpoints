@@ -23,7 +23,9 @@ extension HTTP {
         
         public var isInitialized: Bool { _value.isInitialized }
         
-        var anyValue: Any { wrappedValue }
+        var anyValue: Any {
+            encode(obj: wrappedValue) ?? wrappedValue
+        }
         
         public init(name: String, help: String? = nil) {
             self.name = name
@@ -36,76 +38,32 @@ extension HTTP {
             self.help = help
             self._value = .initialized(value)
         }
+        
+        func encode(obj: Any) -> Any? {
+            guard let obj = obj as? AnyRawRepresentable else {
+                return nil
+            }
+            switch obj {
+            case _ where obj.floatRawValue != nil:
+                return obj.floatRawValue
+            case _ where obj.stringRawValue != nil:
+                return obj.stringRawValue
+            case _ where obj.intRawValue != nil:
+                return obj.intRawValue
+            case _ where obj.boolRawValue != nil:
+                return obj.boolRawValue
+            default:
+                return nil
+            }
+        }
     }
 }
 
-extension HTTP.Parameter: ExpressibleByStringLiteral, ExpressibleByUnicodeScalarLiteral, ExpressibleByExtendedGraphemeClusterLiteral
-where T: ExpressibleByStringLiteral {
-    
-    public init(stringLiteral value: T.StringLiteralType) {
-        self.init(value: T(stringLiteral: value))
-    }
-
-    public init(unicodeScalarLiteral value: T.UnicodeScalarLiteralType) {
-        self.init(value: T(unicodeScalarLiteral: value))
-    }
-    
-    public init(extendedGraphemeClusterLiteral value: T.ExtendedGraphemeClusterLiteralType) {
-        self.init(value: T(extendedGraphemeClusterLiteral: value))
-    }
-}
-
-extension HTTP.Parameter: ExpressibleByIntegerLiteral where T: ExpressibleByIntegerLiteral {
-    
-    public init(integerLiteral value: T.IntegerLiteralType) {
-        self.init(value: T(integerLiteral: value))
-    }
-}
-
-extension HTTP.Parameter: ExpressibleByFloatLiteral where T: ExpressibleByFloatLiteral {
-    
-    public init(floatLiteral value: T.FloatLiteralType) {
-        self.init(value: T(floatLiteral: value))
-    }
-}
-
-extension HTTP.Parameter: ExpressibleByBooleanLiteral where T: ExpressibleByBooleanLiteral {
-    
-    public init(booleanLiteral value: T.BooleanLiteralType) {
-        self.init(value: T(booleanLiteral: value))
-    }
-}
-
-extension HTTP.Parameter: ExpressibleByNilLiteral where T: ExpressibleByNilLiteral {
-    
-    public init(nilLiteral: ()) {
-        self.init(value: T(nilLiteral: nilLiteral))
-    }
-}
-
-extension HTTP.Parameter: ExpressibleByArrayLiteral where T: ExpressibleByArrayLiteral {
-    
-    public typealias ArrayLiteralElement = T.ArrayLiteralElement
-    
-    public init(arrayLiteral elements: T.ArrayLiteralElement...) {
-        self.init(value: elements as! T) // swiftlint:disable:this force_cast
-    }
-}
-
-extension HTTP.Parameter: ExpressibleByDictionaryLiteral where T: ExpressibleByDictionaryLiteral {
-    
-    public typealias Key = T.Key
-    public typealias Value = T.Value
-    
-    public init(dictionaryLiteral elements: (T.Key, T.Value)...) {
-        self.init(value: elements as! T) // swiftlint:disable:this force_cast
-    }
-}
-
+// MARK: -
 
 internal protocol AnyParameterValue {
     var name: String { get }
     var help: String? { get }
     var isInitialized: Bool { get }
-    var anyValue: Any { get  }
+    var anyValue: Any { get }
 }
