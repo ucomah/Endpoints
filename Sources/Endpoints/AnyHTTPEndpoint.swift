@@ -47,7 +47,7 @@ public extension AnyHTTPEndpoint {
     }
     
     var query: String? {
-        parameters?.encodedFor(method: .get)
+        parameters?.encodedFor(method: method)
     }
 }
 
