@@ -11,7 +11,9 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: Any {
             if let arr = value as? [String] {
                 addons.append(contentsOf: arr.map { "\(key)=\($0)" })
             } else {
-                addons.append("\(key)=\(String(describing: value))")
+                let unwrapped = unwrap(value)
+                guard !isOptionalType(type(of: unwrapped)) else { continue }
+                addons.append("\(key)=\(String(describing: unwrapped))")
             }
         }
         guard !addons.isEmpty else { return nil }
