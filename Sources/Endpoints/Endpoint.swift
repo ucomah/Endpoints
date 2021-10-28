@@ -25,8 +25,15 @@ public extension AnyHTTPEndpoint {
             $0.trimmingCharacters(in: .init(charactersIn: "_"))
         }
         let values = mirror.map { $0.value as? AnyParameterValue }
-        let buf = zip(titles, values).map {
-            (max($0.0, $0.1?.name ?? ""), $0.1?.anyValue)
+        let buf = zip(titles, values).map { (param) -> (String, Any?) in
+            let title: String
+            if let name = param.1?.name, !name.isEmpty {
+                title = name
+            } else {
+                title = param.0
+            }
+            let value = param.1?.anyValue
+            return (title, value)
         }
         return Dictionary(uniqueKeysWithValues: buf).compactMapValues { $0 }
     }
