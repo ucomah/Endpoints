@@ -44,6 +44,8 @@ public extension AnyHTTPEndpoint {
         let r = path.startIndex ..< path.index(path.startIndex, offsetBy: 2)
         let p = path.replacingOccurrences(of: "/", with: "", options: [], range: r)
         return "\(baseURL)/\(p)\(query ?? "")"
+            .replacingOccurrences(of: "//", with: "/")
+            .replacingOccurrences(of: ":/", with: "://")
     }
     
     var query: String? {
