@@ -17,8 +17,13 @@ public final class HTTP {
     public typealias Headers = [String: String]
     
     public enum ContentType: String {
+        // Content-Type: application/json
         case json
+        // Content-Type: multipart/form-data
         case formData
+        // Content-Type: text/plain
         case plainText
+        // Content-Type: application/x-www-form-urlencoded
+        case formURL
     }
 }
