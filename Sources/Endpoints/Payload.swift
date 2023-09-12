@@ -1,13 +1,13 @@
 public protocol HTTPPayload: CustomStringConvertible, Encodable {
-    var kind: HTTP.ContentType { get }
+    var contentType: HTTP.ContentType { get }
 }
 
 extension HTTPPayload {
     
-    public var kind: HTTP.ContentType { .json }
+    public var contentType: HTTP.ContentType { .json }
     
     public var description: String {
-        switch kind {
+        switch contentType {
         case .plainText:
             return String(describing: self)
         default:
